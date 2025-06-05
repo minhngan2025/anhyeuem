@@ -53,7 +53,7 @@
 
   .name-block {
     flex: 1 1 0;
-    min-width: 180px;
+    min-width: 260px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -223,7 +223,7 @@
 
   @keyframes fall {
     0% {
-      transform: translateY(-50px) translateX(0) rotate(0deg) scale(0.7);
+      transform: translateY(0) translateX(0) rotate(0deg) scale(0.7);
       opacity: 0.9;
       text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
       filter: brightness(100%);
@@ -277,14 +277,14 @@
 
   <div class="names-heart-wrapper" aria-label="Tên Minh và Ngân cùng trái tim">
     <div class="name-block" aria-label="Tên Minh và biệt danh">
-      <p class="name">Hoàng Thanh Minh</p>
+      <p class="name">Hoàng&nbsp;Thanh<br/>Minh</p>
       <p class="nickname">Min Min ♐</p>
     </div>
 
     <div class="heart-icon" aria-hidden="true">❤️</div>
 
     <div class="name-block" aria-label="Tên Ngân và biệt danh">
-      <p class="name">Ngô Thị<br/>Ngân</p>
+      <p class="name">Ngô&nbsp;Thị<br/>Ngân</p>
       <p class="nickname">Bé Ngân ❤️</p>
     </div>
   </div>
@@ -297,10 +297,10 @@
   </div>
 
   <p class="description">Chúng ta đã yêu nhau được:</p>
-  <div id="counter" role="timer" aria-live="polite" aria-atomic="true">0 ngày</div>
+  <div id="counter" role="timer" aria-live="polite" aria-atomic="true">...</div>
 
   <audio id="backgroundMusic" loop style="display: none;">
-    <source src="https://files.catbox.moe/98hzq8.mp3" type="audio/mpeg" />
+    <source src="https://files.catbox.moe/ek0cnp.mp3" type="audio/mpeg" />
     Trình duyệt của bạn không hỗ trợ phát nhạc.
   </audio>
 
@@ -316,13 +316,42 @@
 
   function updateCounter() {
     const now = new Date();
-    const diffTime = now - startDate;
 
-    if (diffTime >= 0) {
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      counterElement.textContent = `${diffDays} ngày`;
-    } else {
+    if (now < startDate) {
       counterElement.textContent = "Chưa đến ngày bắt đầu yêu!";
+      return;
+    }
+
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+
+    if (days < 0) {
+      months--;
+      const lastDayOfPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += lastDayOfPrevMonth;
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const parts = [];
+    if (years > 0) {
+      parts.push(`${years} năm`);
+    }
+    if (months > 0) {
+      parts.push(`${months} tháng`);
+    }
+    if (days >= 0 && parts.length < 2) { 
+        parts.push(`${days} ngày`);
+    }
+
+    if (parts.length === 0) {
+        counterElement.textContent = "0 ngày";
+    } else {
+        counterElement.textContent = parts.join(' ');
     }
   }
 
@@ -335,7 +364,10 @@
     const emojis = ['❤️', '💖', '💞', '💕', '💗', '💓', '💘', '💝', '💟', '❣️', '💌'];
     heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     heart.className = 'heart-fall';
+    
+    heart.style.top = '-50px'; 
     heart.style.left = (Math.random() * (window.innerWidth - 40) + 20) + 'px';
+    
     heart.style.fontSize = (14 + Math.random() * 26) + 'px';
     heart.style.animationDuration = (5 + Math.random() * 3) + 's';
     heart.style.setProperty('--wiggle', Math.random() > 0.5 ? 1 : -1);
