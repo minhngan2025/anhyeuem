@@ -37,14 +37,9 @@
     justify-content: center;
     gap: 3rem;
     margin-bottom: 2.5rem;
-    flex-wrap: nowrap;
     max-width: 850px;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 10;
   }
   .name-block {
-    flex: 1 1 0;
     min-width: 260px;
     display: flex;
     flex-direction: column;
@@ -67,11 +62,9 @@
     text-shadow: 1px 1px 4px #ffb6c1;
   }
   .heart-icon {
-    flex-shrink: 0;
     font-size: 6.5rem;
     color: #d81e5b;
     animation: beat 1s infinite;
-    user-select: none;
     text-shadow: 0 0 25px #d81e5b;
   }
   @keyframes beat {
@@ -79,25 +72,18 @@
     50% { transform: scale(1.3); }
   }
   .photo-container {
-    position: relative;
     width: 320px;
-    height: auto;
     box-shadow: 0 0 25px 8px #d81e5bcc;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 2.5rem;
-    z-index: 10;
+    margin-bottom: 0.5rem;
   }
-  .photo-container video {
-    display: block;
+  .photo-container img {
     width: 100%;
     height: auto;
     object-fit: cover;
   }
   .start-date-label {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     background: rgba(216, 30, 91, 0.85);
     color: #fff;
     font-family: 'Dancing Script', cursive;
@@ -108,6 +94,8 @@
     user-select: none;
     box-shadow: 0 -2px 12px rgba(216, 30, 91, 0.9);
     letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    border-radius: 8px;
   }
   #counter {
     font-family: 'Great Vibes', cursive;
@@ -117,7 +105,6 @@
     color: #7f2249;
     text-shadow: 0 0 14px #ff6384;
     text-align: center;
-    z-index: 10;
   }
   p.description {
     font-family: 'Dancing Script', cursive;
@@ -127,7 +114,6 @@
     color: #802241;
     text-align: center;
     text-shadow: 1px 1px 5px #ff9eb8;
-    z-index: 10;
   }
   p.love-message {
     margin-top: 2.5rem;
@@ -137,33 +123,31 @@
     text-shadow: 1px 1px 6px #ffadc2;
     text-align: center;
     letter-spacing: 0.04em;
-    z-index: 10;
   }
   p.love-message span {
     color: #d81e5b;
     font-size: 2.2rem;
     animation: beat 1s infinite;
   }
-  @media (max-width: 500px) {
-    h1 { font-size: 2.8rem; }
-    .names-heart-wrapper { flex-direction: column; gap: 1.5rem; }
-    .heart-icon { font-size: 5rem; }
-    .name-block .name { font-size: 2.6rem; }
-    .photo-container { width: 260px; }
-  }
   .heart-fall {
     position: fixed;
-    font-size: 20px;
     pointer-events: none;
-    animation: fall 6s ease-in-out forwards;
+    animation: fallRotate var(--duration) linear forwards;
     z-index: 5;
   }
-  @keyframes fall {
-    0% { transform: translateY(0) scale(0.7); opacity: 0.9; }
-    100% { transform: translateY(100vh) scale(0.7); opacity: 0; }
+  @keyframes fallRotate {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg) scale(var(--scale));
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) translateX(calc(20px * var(--wiggle))) rotate(360deg) scale(var(--scale));
+      opacity: 0;
+    }
   }
   #fireworksCanvas {
-    position: fixed; top: 0; left: 0;
+    position: fixed;
+    top: 0; left: 0;
     width: 100vw; height: 100vh;
     pointer-events: none;
     z-index: 1;
@@ -172,171 +156,188 @@
 </head>
 <body>
   <h1>Hành Trình Yêu Thương 💕</h1>
-  <div class="names-heart-wrapper">
+
+  <div class="names-heart-wrapper" id="names-block">
     <div class="name-block">
       <p class="name">Hoàng&nbsp;Thanh<br/>Minh</p>
       <p class="nickname">Min Min ♐</p>
     </div>
+
     <div class="heart-icon">❤️</div>
+
     <div class="name-block">
       <p class="name">Ngô&nbsp;Thị<br/>Ngân</p>
       <p class="nickname">Bé Ngân ❤️</p>
     </div>
   </div>
-  <div class="photo-container">
-    <video autoplay loop playsinline>
-      <source src="https://files.catbox.moe/fi3bqh.mp4" type="video/mp4">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
-    <div class="start-date-label">Ngày bắt đầu yêu: 25/04/2025</div>
+
+  <div class="photo-container" id="memory-photo">
+    <img src="https://i.postimg.cc/QN6zw1yy/MinBe.jpg" alt="Ảnh của Minh và Ngân" />
   </div>
+  <div class="start-date-label" id="start-date-text">
+    Ngày bắt đầu yêu: 25/04/2025
+  </div>
+
   <p class="description">Chúng ta đã yêu nhau được:</p>
   <div id="counter">...</div>
+
+  <audio id="backgroundMusic" loop style="display: none;">
+    <source src="https://files.catbox.moe/ek0cnp.mp3" type="audio/mpeg" />
+  </audio>
+
   <p class="love-message">
     Cùng nhau viết tiếp câu chuyện tình yêu nhé! <span>♥</span>
   </p>
+
   <canvas id="fireworksCanvas"></canvas>
 
 <script>
-  const startDate = new Date('2025-04-25T00:00:00');
-  const counterElement = document.getElementById('counter');
-  function updateCounter() {
-    const now = new Date();
-    if (now < startDate) {
-      counterElement.textContent = "Chưa đến ngày bắt đầu yêu!";
-      return;
-    }
-    let years = now.getFullYear() - startDate.getFullYear();
-    let months = now.getMonth() - startDate.getMonth();
-    let days = now.getDate() - startDate.getDate();
-    if (days < 0) {
-      months--;
-      days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-    }
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-    const parts = [];
-    if (years > 0) parts.push(`${years} năm`);
-    if (months > 0) parts.push(`${months} tháng`);
-    if (days >= 0 && parts.length < 2) parts.push(`${days} ngày`);
-    counterElement.textContent = parts.length === 0 ? "0 ngày" : parts.join(' ');
-  }
-  updateCounter();
-  setInterval(updateCounter, 1000);
+const startDate = new Date('2025-04-25T00:00:00');
+const counterElement = document.getElementById('counter');
+function updateCounter() {
+  const now = new Date();
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
+  if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+  if (months < 0) { years--; months += 12; }
+  const parts = [];
+  if (years > 0) parts.push(`${years} năm`);
+  if (months > 0) parts.push(`${months} tháng`);
+  if (days >= 0 && parts.length < 2) parts.push(`${days} ngày`);
+  counterElement.textContent = parts.length === 0 ? "0 ngày" : parts.join(' ');
+}
+updateCounter();
+setInterval(updateCounter, 1000);
 
-  function createHeart() {
-    const heart = document.createElement('div');
-    const emojis = ['❤️','💖','💞','💕','💗','💓','💘','💝','💟','❣️','💌'];
-    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    heart.className = 'heart-fall';
-    heart.style.top = '-50px';
-    heart.style.left = (Math.random() * (window.innerWidth - 40) + 20) + 'px';
-    heart.style.fontSize = (14 + Math.random() * 26) + 'px';
-    heart.style.animationDuration = (5 + Math.random() * 3) + 's';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), parseFloat(heart.style.animationDuration) * 1000);
-  }
-  setInterval(createHeart, 300);
+// Lấy vùng cấm icon rơi (gộp hết)
+function getRestrictedArea() {
+  const names = document.getElementById('names-block').getBoundingClientRect();
+  const photo = document.getElementById('memory-photo').getBoundingClientRect();
+  const dateText = document.getElementById('start-date-text').getBoundingClientRect();
+  return {
+    top: names.top,
+    bottom: dateText.bottom,
+    left: Math.min(names.left, photo.left, dateText.left),
+    right: Math.max(names.right, photo.right, dateText.right)
+  };
+}
 
-  const canvas = document.getElementById('fireworksCanvas');
-  const ctx = canvas.getContext('2d');
-  let cw, ch, fireworks = [], particles = [];
-  function resize() { cw = canvas.width = innerWidth; ch = canvas.height = innerHeight; }
-  addEventListener('resize', resize); resize();
-  class Firework {
-    constructor(sx, sy, tx, ty) {
-      this.x = sx; this.y = sy; this.tx = tx; this.ty = ty;
-      this.sx = sx; this.sy = sy;
-      this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
-      this.distanceTraveled = 0;
-      this.coordinates = Array(3).fill([this.x, this.y]);
-      this.angle = Math.atan2(ty - sy, tx - sx);
-      this.speed = 2 + Math.random(); this.acceleration = 1.02;
-      this.brightness = Math.random() * 0.6 + 0.4;
-      this.targetRadius = 1;
-    }
-    update(index) {
-      this.coordinates.pop();
-      this.coordinates.unshift([this.x, this.y]);
-      if (this.targetRadius < 8) this.targetRadius += 0.3; else this.targetRadius = 1;
-      this.speed *= this.acceleration;
-      const vx = Math.cos(this.angle) * this.speed;
-      const vy = Math.sin(this.angle) * this.speed;
-      this.distanceTraveled = Math.hypot(this.x + vx - this.sx, this.y + vy - this.sy);
-      if (this.distanceTraveled >= this.distanceToTarget) {
-        createParticles(this.tx, this.ty);
-        fireworks.splice(index, 1);
-      } else { this.x += vx; this.y += vy; }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.moveTo(...this.coordinates[this.coordinates.length - 1]);
-      ctx.lineTo(this.x, this.y);
-      ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness * 100}%)`;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-  }
-  class Particle {
-    constructor(x, y) {
-      this.x = x; this.y = y;
-      this.coordinates = Array(5).fill([x, y]);
-      this.angle = Math.random() * Math.PI * 2;
-      this.speed = Math.random() * 5 + 1;
-      this.friction = 0.95; this.gravity = 0.7;
-      this.hue = Math.floor(Math.random() * 360);
-      this.brightness = Math.random() * 60 + 40;
-      this.alpha = 1; this.decay = Math.random() * 0.015 + 0.015;
-    }
-    update(index) {
-      this.coordinates.pop();
-      this.coordinates.unshift([this.x, this.y]);
-      this.speed *= this.friction;
-      this.x += Math.cos(this.angle) * this.speed;
-      this.y += Math.sin(this.angle) * this.speed + this.gravity;
-      this.alpha -= this.decay;
-      if (this.alpha <= 0) particles.splice(index, 1);
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.moveTo(...this.coordinates[this.coordinates.length - 1]);
-      ctx.lineTo(this.x, this.y);
-      ctx.strokeStyle = `hsla(${this.hue},100%,${this.brightness}%,${this.alpha})`;
-      ctx.stroke();
-    }
-  }
-  function createParticles(x, y) { for (let i = 0; i < 60; i++) particles.push(new Particle(x, y)); }
-  function loop() {
-    requestAnimationFrame(loop);
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.fillRect(0, 0, cw, ch);
-    ctx.globalCompositeOperation = 'lighter';
-    for (let i = fireworks.length - 1; i >= 0; i--) { fireworks[i].draw(); fireworks[i].update(i); }
-    for (let i = particles.length - 1; i >= 0; i--) { particles[i].draw(); particles[i].update(i); }
-    if (Math.random() < 0.02) {
-      fireworks.push(new Firework(Math.random() * cw, ch, Math.random() * cw, Math.random() * ch / 2));
-    }
-  }
-  loop();
+// Trái tim rơi
+function createHeart() {
+  const emojis = ['💕','💞','💓','💗','💖','💝','💟','💌','🍀','🥑','🌸','🌟'];
+  const heart = document.createElement('div');
+  heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  heart.className = 'heart-fall';
 
-  // Phát video có tiếng khi click hoặc chạm lần đầu
-  document.addEventListener('click', () => {
-    const vid = document.querySelector('.photo-container video');
-    vid.muted = false;
-    vid.play().catch(err => console.log('Không thể phát video tự động:', err));
-  }, { once: true });
+  let baseSize = window.innerWidth > 768 ? 26 : 18;
+  heart.style.fontSize = (baseSize + Math.random() * 14) + 'px';
+  heart.style.setProperty('--wiggle', Math.random() > 0.5 ? 1 : -1);
+  heart.style.setProperty('--scale', (0.9 + Math.random() * 0.4).toFixed(2));
+  heart.style.setProperty('--duration', (7 + Math.random() * 4) + 's');
 
-  document.addEventListener('touchstart', () => {
-    const vid = document.querySelector('.photo-container video');
-    vid.muted = false;
-    vid.play().catch(err => console.log('Không thể phát video tự động:', err));
-  }, { once: true });
+  // Vị trí X tránh vùng cấm
+  const restricted = getRestrictedArea();
+  let x;
+  do {
+    x = Math.random() * window.innerWidth;
+  } while (x > restricted.left - 20 && x < restricted.right + 20);
 
+  heart.style.left = x + 'px';
+  heart.style.top = '-40px';
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), parseFloat(heart.style.getPropertyValue('--duration')) * 1000);
+}
+setInterval(createHeart, 500);
+
+// Pháo hoa giữ nguyên
+const canvas = document.getElementById('fireworksCanvas');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+let fireworks = [], particles = [];
+function resize() { cw = canvas.width = innerWidth; ch = canvas.height = innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+class Firework {
+  constructor(sx, sy, tx, ty) {
+    this.x = sx; this.y = sy; this.sx = sx; this.sy = sy; this.tx = tx; this.ty = ty;
+    this.dist = Math.hypot(tx - sx, ty - sy);
+    this.coords = Array(3).fill([this.x, this.y]);
+    this.angle = Math.atan2(ty - sy, tx - sx);
+    this.speed = 2 + Math.random(); this.accel = 1.01;
+    this.brightness = Math.random() * 0.6 + 0.4; this.targetRadius = 1;
+  }
+  update(i) {
+    this.coords.pop(); this.coords.unshift([this.x, this.y]);
+    if (this.targetRadius < 8) this.targetRadius += 0.3; else this.targetRadius = 1;
+    this.speed *= this.accel;
+    const vx = Math.cos(this.angle) * this.speed, vy = Math.sin(this.angle) * this.speed;
+    if (Math.hypot(this.sx - (this.x + vx), this.sy - (this.y + vy)) >= this.dist) { createParticles(this.tx, this.ty); fireworks.splice(i, 1); }
+    else { this.x += vx; this.y += vy; }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.moveTo(this.coords[this.coords.length - 1][0], this.coords[this.coords.length - 1][1]);
+    ctx.lineTo(this.x, this.y);
+    ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness * 100}%)`; ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2); ctx.stroke();
+  }
+}
+
+class Particle {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.coords = Array(7).fill([this.x, this.y]);
+    this.angle = Math.random() * Math.PI * 2;
+    this.speed = Math.random() * 4 + 1; this.friction = 0.94; this.gravity = 0.6;
+    this.hue = Math.floor(Math.random() * 360); this.brightness = Math.random() * 60 + 40;
+    this.alpha = 1; this.decay = Math.random() * 0.01 + 0.008;
+  }
+  update(i) {
+    this.coords.pop(); this.coords.unshift([this.x, this.y]);
+    this.speed *= this.friction;
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed + this.gravity;
+    this.alpha -= this.decay;
+    if (this.alpha <= 0) particles.splice(i, 1);
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.moveTo(this.coords[this.coords.length - 1][0], this.coords[this.coords.length - 1][1]);
+    ctx.lineTo(this.x, this.y);
+    ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`; ctx.stroke();
+  }
+}
+
+function createParticles(x, y) {
+  for (let i = 0; i < 80; i++) particles.push(new Particle(x, y));
+}
+
+function loop() {
+  requestAnimationFrame(loop);
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(0, 0, cw, ch);
+  ctx.globalCompositeOperation = 'lighter';
+  for (let i = fireworks.length - 1; i >= 0; i--) { fireworks[i].draw(); fireworks[i].update(i); }
+  for (let i = particles.length - 1; i >= 0; i--) { particles[i].draw(); particles[i].update(i); }
+  if (Math.random() < 0.015) {
+    fireworks.push(new Firework(Math.random() * cw, ch, Math.random() * cw, Math.random() * ch / 2));
+  }
+}
+loop();
+
+// Nhạc nền
+const music = document.getElementById('backgroundMusic');
+let musicPlaying = false;
+function playMusic() {
+  if (!musicPlaying) {
+    music.play().then(() => musicPlaying = true).catch(e => console.log('Lỗi phát nhạc:', e));
+  }
+}
+document.addEventListener('click', playMusic, { once: true });
+document.addEventListener('touchstart', playMusic, { once: true });
 </script>
 </body>
 </html>
