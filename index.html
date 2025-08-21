@@ -39,13 +39,7 @@
     margin-bottom: 2.5rem;
     max-width: 850px;
   }
-  .name-block {
-    min-width: 260px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+  .name-block { text-align: center; }
   .name-block .name {
     font-family: 'Great Vibes', cursive;
     font-size: 3.2rem;
@@ -78,11 +72,7 @@
     overflow: hidden;
     margin-bottom: 0.5rem;
   }
-  .photo-container img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
+  .photo-container img { width: 100%; height: auto; object-fit: cover; }
   .start-date-label {
     background: rgba(216, 30, 91, 0.85);
     color: #fff;
@@ -91,9 +81,6 @@
     font-size: 1.5rem;
     text-align: center;
     padding: 9px 0;
-    user-select: none;
-    box-shadow: 0 -2px 12px rgba(216, 30, 91, 0.9);
-    letter-spacing: 0.05em;
     margin-bottom: 2rem;
     border-radius: 8px;
   }
@@ -120,7 +107,6 @@
     font-size: 1.5rem;
     color: #a8204d;
     font-family: 'Dancing Script', cursive;
-    text-shadow: 1px 1px 6px #ffadc2;
     text-align: center;
     letter-spacing: 0.04em;
   }
@@ -136,14 +122,8 @@
     z-index: 5;
   }
   @keyframes fallRotate {
-    0% {
-      transform: translateY(0) translateX(0) rotate(0deg) scale(var(--scale));
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(100vh) translateX(calc(20px * var(--wiggle))) rotate(360deg) scale(var(--scale));
-      opacity: 0;
-    }
+    0% { transform: translateY(0) rotate(0deg) scale(var(--scale)); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg) scale(var(--scale)); opacity: 0; }
   }
   #fireworksCanvas {
     position: fixed;
@@ -151,6 +131,12 @@
     width: 100vw; height: 100vh;
     pointer-events: none;
     z-index: 1;
+  }
+  /* Mobile tối ưu */
+  @media (max-width: 500px) {
+    h1 { font-size: 2.2rem; text-shadow: none; }
+    #counter { font-size: 2.4rem; text-shadow: none; }
+    p.description, p.love-message { font-size: 1.2rem; text-shadow: none; }
   }
 </style>
 </head>
@@ -162,9 +148,7 @@
       <p class="name">Hoàng&nbsp;Thanh<br/>Minh</p>
       <p class="nickname">Min Min ♐</p>
     </div>
-
     <div class="heart-icon">❤️</div>
-
     <div class="name-block">
       <p class="name">Ngô&nbsp;Thị<br/>Ngân</p>
       <p class="nickname">Bé Ngân ❤️</p>
@@ -210,7 +194,10 @@ function updateCounter() {
 updateCounter();
 setInterval(updateCounter, 1000);
 
-// Lấy vùng cấm icon rơi (gộp hết)
+// Check mobile
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+// Vùng cấm icon rơi
 function getRestrictedArea() {
   const names = document.getElementById('names-block').getBoundingClientRect();
   const photo = document.getElementById('memory-photo').getBoundingClientRect();
@@ -223,7 +210,7 @@ function getRestrictedArea() {
   };
 }
 
-// Trái tim rơi
+// Icon rơi
 function createHeart() {
   const emojis = ['💕','💞','💓','💗','💖','💝','💟','💌','🍀','🥑','🌸','🌟'];
   const heart = document.createElement('div');
@@ -232,26 +219,22 @@ function createHeart() {
 
   let baseSize = window.innerWidth > 768 ? 26 : 18;
   heart.style.fontSize = (baseSize + Math.random() * 14) + 'px';
-  heart.style.setProperty('--wiggle', Math.random() > 0.5 ? 1 : -1);
   heart.style.setProperty('--scale', (0.9 + Math.random() * 0.4).toFixed(2));
-  heart.style.setProperty('--duration', (7 + Math.random() * 4) + 's');
+  heart.style.setProperty('--duration', (isMobile ? 9 : 7) + Math.random() * 3 + 's');
 
-  // Vị trí X tránh vùng cấm
   const restricted = getRestrictedArea();
   let x;
-  do {
-    x = Math.random() * window.innerWidth;
-  } while (x > restricted.left - 20 && x < restricted.right + 20);
-
+  do { x = Math.random() * window.innerWidth; }
+  while (x > restricted.left - 20 && x < restricted.right + 20);
   heart.style.left = x + 'px';
   heart.style.top = '-40px';
 
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), parseFloat(heart.style.getPropertyValue('--duration')) * 1000);
 }
-setInterval(createHeart, 500);
+setInterval(createHeart, isMobile ? 1200 : 500);
 
-// Pháo hoa giữ nguyên
+// Pháo hoa
 const canvas = document.getElementById('fireworksCanvas');
 const ctx = canvas.getContext('2d');
 let cw, ch;
@@ -266,34 +249,31 @@ class Firework {
     this.coords = Array(3).fill([this.x, this.y]);
     this.angle = Math.atan2(ty - sy, tx - sx);
     this.speed = 2 + Math.random(); this.accel = 1.01;
-    this.brightness = Math.random() * 0.6 + 0.4; this.targetRadius = 1;
   }
   update(i) {
     this.coords.pop(); this.coords.unshift([this.x, this.y]);
-    if (this.targetRadius < 8) this.targetRadius += 0.3; else this.targetRadius = 1;
     this.speed *= this.accel;
     const vx = Math.cos(this.angle) * this.speed, vy = Math.sin(this.angle) * this.speed;
-    if (Math.hypot(this.sx - (this.x + vx), this.sy - (this.y + vy)) >= this.dist) { createParticles(this.tx, this.ty); fireworks.splice(i, 1); }
-    else { this.x += vx; this.y += vy; }
+    if (Math.hypot(this.sx - (this.x + vx), this.sy - (this.y + vy)) >= this.dist) {
+      createParticles(this.tx, this.ty); fireworks.splice(i, 1);
+    } else { this.x += vx; this.y += vy; }
   }
   draw() {
     ctx.beginPath();
     ctx.moveTo(this.coords[this.coords.length - 1][0], this.coords[this.coords.length - 1][1]);
     ctx.lineTo(this.x, this.y);
-    ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness * 100}%)`; ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, 60%)`; ctx.stroke();
   }
 }
-
 class Particle {
   constructor(x, y) {
     this.x = x; this.y = y;
     this.coords = Array(7).fill([this.x, this.y]);
     this.angle = Math.random() * Math.PI * 2;
-    this.speed = Math.random() * 4 + 1; this.friction = 0.94; this.gravity = 0.6;
-    this.hue = Math.floor(Math.random() * 360); this.brightness = Math.random() * 60 + 40;
-    this.alpha = 1; this.decay = Math.random() * 0.01 + 0.008;
+    this.speed = Math.random() * 4 + 1;
+    this.friction = 0.94; this.gravity = 0.6;
+    this.hue = Math.floor(Math.random() * 360); this.alpha = 1;
+    this.decay = Math.random() * 0.01 + 0.008;
   }
   update(i) {
     this.coords.pop(); this.coords.unshift([this.x, this.y]);
@@ -307,14 +287,13 @@ class Particle {
     ctx.beginPath();
     ctx.moveTo(this.coords[this.coords.length - 1][0], this.coords[this.coords.length - 1][1]);
     ctx.lineTo(this.x, this.y);
-    ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`; ctx.stroke();
+    ctx.strokeStyle = `hsla(${this.hue}, 100%, 60%, ${this.alpha})`; ctx.stroke();
   }
 }
-
 function createParticles(x, y) {
-  for (let i = 0; i < 80; i++) particles.push(new Particle(x, y));
+  const count = isMobile ? 40 : 80;
+  for (let i = 0; i < count; i++) particles.push(new Particle(x, y));
 }
-
 function loop() {
   requestAnimationFrame(loop);
   ctx.globalCompositeOperation = 'destination-out';
@@ -322,9 +301,7 @@ function loop() {
   ctx.globalCompositeOperation = 'lighter';
   for (let i = fireworks.length - 1; i >= 0; i--) { fireworks[i].draw(); fireworks[i].update(i); }
   for (let i = particles.length - 1; i >= 0; i--) { particles[i].draw(); particles[i].update(i); }
-  if (Math.random() < 0.015) {
-    fireworks.push(new Firework(Math.random() * cw, ch, Math.random() * cw, Math.random() * ch / 2));
-  }
+  if (Math.random() < 0.015) fireworks.push(new Firework(Math.random() * cw, ch, Math.random() * cw, Math.random() * ch / 2));
 }
 loop();
 
@@ -333,7 +310,7 @@ const music = document.getElementById('backgroundMusic');
 let musicPlaying = false;
 function playMusic() {
   if (!musicPlaying) {
-    music.play().then(() => musicPlaying = true).catch(e => console.log('Lỗi phát nhạc:', e));
+    music.play().then(() => musicPlaying = true).catch(()=>{});
   }
 }
 document.addEventListener('click', playMusic, { once: true });
