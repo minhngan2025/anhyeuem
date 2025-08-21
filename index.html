@@ -21,141 +21,287 @@
     overflow-x: hidden;
     position: relative;
   }
+
   h1 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 3.8rem;
     font-weight: 800;
     margin-bottom: 2rem;
     color: #e63946;
     text-align: center;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.25);
+    letter-spacing: 0.08em;
+    text-shadow:
+      2px 2px 6px rgba(0,0,0,0.25),
+      -2px -2px 6px rgba(255,255,255,0.7);
+    user-select: none;
+    z-index: 10;
   }
+
   .names-heart-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3rem;
     margin-bottom: 2.5rem;
+    flex-wrap: nowrap;
+    max-width: 850px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 10;
   }
-  .name-block { text-align: center; }
+
+  .name-block {
+    flex: 1 1 0;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .name-block .name {
     font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
+    font-size: 3.2rem;
     color: #7f2249;
-    text-shadow: 1px 1px 5px #ff9eb8;
+    text-shadow: 1px 1px 7px #ff9eb8;
     margin-bottom: 0.3rem;
     font-weight: 700;
   }
+
   .name-block .nickname {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: #a94a64;
-    text-shadow: 1px 1px 3px #ffb6c1;
+    font-weight: 700;
+    text-shadow: 1px 1px 4px #ffb6c1;
   }
+
   .heart-icon {
-    font-size: 6rem;
+    flex-shrink: 0;
+    font-size: 6.5rem;
     color: #d81e5b;
     animation: beat 1s infinite;
-    text-shadow: 0 0 20px #d81e5b;
+    user-select: none;
+    text-shadow: 0 0 25px #d81e5b;
   }
-  @keyframes beat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
   .photo-container {
-    width: 300px;
-    box-shadow: 0 0 20px 6px #d81e5bcc;
+    position: relative;
+    width: 320px;
+    height: auto;
+    box-shadow: 0 0 25px 8px #d81e5bcc;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 0.5rem;
+    margin-bottom: 2.5rem;
+    z-index: 10;
   }
-  .photo-container img { width: 100%; height: auto; object-fit: cover; }
+
+  .photo-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
   .start-date-label {
-    background: rgba(216,30,91,0.85);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(216, 30, 91, 0.85);
     color: #fff;
     font-family: 'Dancing Script', cursive;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     text-align: center;
-    padding: 8px 0;
-    margin-bottom: 2rem;
-    border-radius: 8px;
+    padding: 9px 0;
+    user-select: none;
+    box-shadow: 0 -2px 12px rgba(216, 30, 91, 0.9);
+    letter-spacing: 0.05em;
   }
+
   #counter {
     font-family: 'Great Vibes', cursive;
-    font-size: 3.2rem;
+    font-size: 3.8rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: #7f2249;
-    text-shadow: 0 0 10px #ff6384;
+    text-shadow: 0 0 14px #ff6384;
+    text-align: center;
+    z-index: 10;
   }
+
   p.description {
     font-family: 'Dancing Script', cursive;
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
     color: #802241;
-    text-shadow: 1px 1px 4px #ff9eb8;
+    text-align: center;
+    text-shadow: 1px 1px 5px #ff9eb8;
+    user-select: none;
+    z-index: 10;
   }
+
+  button {
+    background-color: #d81e5b;
+    color: white;
+    font-weight: 700;
+    padding: 0.85rem 3.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    box-shadow: 0 0 18px #d81e5bcc;
+    border: none;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 1rem auto 0 auto;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    z-index: 10;
+  }
+
+  button:hover {
+    background-color: #a91a45;
+  }
+
   p.love-message {
-    margin-top: 2rem;
-    font-size: 1.2rem;
+    margin-top: 2.5rem;
+    font-size: 1.5rem;
+    user-select:none;
     color: #a8204d;
     font-family: 'Dancing Script', cursive;
+    text-shadow: 1px 1px 6px #ffadc2;
     text-align: center;
+    letter-spacing: 0.04em;
+    z-index: 10;
   }
+
   p.love-message span {
     color: #d81e5b;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     animation: beat 1s infinite;
   }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    h1 {
+      font-size: 2.8rem;
+    }
+    .names-heart-wrapper {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .heart-icon {
+      font-size: 5rem;
+    }
+    .name-block .name {
+      font-size: 2.6rem;
+    }
+    .photo-container {
+      width: 260px;
+    }
+    button {
+      font-size: 1.1rem;
+      padding: 0.75rem 2.5rem;
+    }
+  }
+
+  /* Trái tim rơi */
   .heart-fall {
     position: fixed;
+    font-size: 20px;
     pointer-events: none;
-    animation: fallRotate var(--duration) linear forwards;
+    animation: fall 6s ease-in-out forwards;
     z-index: 5;
   }
-  @keyframes fallRotate {
-    0% { transform: translateY(0) rotate(0deg) scale(var(--scale)); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg) scale(var(--scale)); opacity: 0; }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg) scale(0.7);
+      opacity: 0.9;
+      text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+      filter: brightness(100%);
+    }
+    20% {
+      transform: translateY(20vh) translateX(calc(10px * var(--wiggle))) rotate(72deg) scale(1.0);
+      opacity: 1;
+      text-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+      filter: brightness(160%);
+    }
+    40% {
+      transform: translateY(40vh) translateX(calc(-10px * var(--wiggle))) rotate(144deg) scale(0.8);
+      opacity: 0.9;
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      filter: brightness(140%);
+    }
+    60% {
+      transform: translateY(60vh) translateX(calc(10px * var(--wiggle))) rotate(216deg) scale(0.9);
+      opacity: 0.7;
+      text-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+      filter: brightness(150%);
+    }
+    80% {
+      transform: translateY(80vh) translateX(calc(-10px * var(--wiggle))) rotate(288deg) scale(0.8);
+      opacity: 0.4;
+      text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+      filter: brightness(130%);
+    }
+    100% {
+      transform: translateY(100vh) translateX(0) rotate(360deg) scale(0.7);
+      opacity: 0;
+      text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+      filter: brightness(100%);
+    }
   }
+
+  /* Pháo hoa canvas */
   #fireworksCanvas {
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
     z-index: 1;
-  }
-  /* Mobile nhẹ hơn */
-  @media (max-width: 500px) {
-    h1 { font-size: 2rem; text-shadow:none; }
-    #counter { font-size: 2rem; text-shadow:none; }
-    p.description, p.love-message { font-size: 1rem; text-shadow:none; }
   }
 </style>
 </head>
 <body>
   <h1>Hành Trình Yêu Thương 💕</h1>
 
-  <div class="names-heart-wrapper" id="names-block">
-    <div class="name-block">
+  <div class="names-heart-wrapper" aria-label="Tên Minh và Ngân cùng trái tim">
+    <div class="name-block" aria-label="Tên Minh và biệt danh">
       <p class="name">Hoàng&nbsp;Thanh<br/>Minh</p>
       <p class="nickname">Min Min ♐</p>
     </div>
-    <div class="heart-icon">❤️</div>
-    <div class="name-block">
+
+    <div class="heart-icon" aria-hidden="true">❤️</div>
+
+    <div class="name-block" aria-label="Tên Ngân và biệt danh">
       <p class="name">Ngô&nbsp;Thị<br/>Ngân</p>
       <p class="nickname">Bé Ngân ❤️</p>
     </div>
   </div>
 
-  <div class="photo-container" id="memory-photo">
-    <img src="https://i.postimg.cc/QN6zw1yy/MinBe.jpg" alt="Ảnh kỷ niệm" />
-  </div>
-  <div class="start-date-label" id="start-date-text">
-    Ngày bắt đầu yêu: 25/04/2025
+  <div class="photo-container" aria-label="Ảnh của Minh và Ngân">
+    <img src="https://i.postimg.cc/1RwR7753/1745727569580.jpg" alt="Ảnh của Minh và Ngân" />
+    <div class="start-date-label" aria-label="Ngày bắt đầu yêu">
+      Ngày bắt đầu yêu: 25/04/2025
+    </div>
   </div>
 
   <p class="description">Chúng ta đã yêu nhau được:</p>
-  <div id="counter">...</div>
+  <div id="counter" role="timer" aria-live="polite" aria-atomic="true">...</div>
 
   <audio id="backgroundMusic" loop style="display: none;">
     <source src="https://files.catbox.moe/ek0cnp.mp3" type="audio/mpeg" />
+    Trình duyệt của bạn không hỗ trợ phát nhạc.
   </audio>
 
   <p class="love-message">
@@ -165,75 +311,244 @@
   <canvas id="fireworksCanvas"></canvas>
 
 <script>
-const startDate = new Date('2025-04-25T00:00:00');
-const counterElement = document.getElementById('counter');
-function updateCounter() {
-  const now = new Date();
-  let years = now.getFullYear() - startDate.getFullYear();
-  let months = now.getMonth() - startDate.getMonth();
-  let days = now.getDate() - startDate.getDate();
-  if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
-  if (months < 0) { years--; months += 12; }
-  const parts = [];
-  if (years > 0) parts.push(`${years} năm`);
-  if (months > 0) parts.push(`${months} tháng`);
-  if (days >= 0 && parts.length < 2) parts.push(`${days} ngày`);
-  counterElement.textContent = parts.length === 0 ? "0 ngày" : parts.join(' ');
-}
-updateCounter(); setInterval(updateCounter, 1000);
+  const startDate = new Date('2025-04-25T00:00:00');
+  const counterElement = document.getElementById('counter');
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  function updateCounter() {
+    const now = new Date();
 
-// vùng cấm icon
-function getRestrictedArea() {
-  const names = document.getElementById('names-block').getBoundingClientRect();
-  const photo = document.getElementById('memory-photo').getBoundingClientRect();
-  const dateText = document.getElementById('start-date-text').getBoundingClientRect();
-  return {
-    top: names.top,
-    bottom: dateText.bottom,
-    left: Math.min(names.left, photo.left, dateText.left),
-    right: Math.max(names.right, photo.right, dateText.right)
-  };
-}
+    if (now < startDate) {
+      counterElement.textContent = "Chưa đến ngày bắt đầu yêu!";
+      return;
+    }
 
-// icon rơi
-function createHeart() {
-  const emojis = ['💕','💞','💓','💗','💖','💝','💟','💌','🍀','🥑','🌸','🌟'];
-  const heart = document.createElement('div');
-  heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  heart.className = 'heart-fall';
-  heart.style.fontSize = (window.innerWidth>768?24:16) + Math.random()*12 + "px";
-  heart.style.setProperty('--scale',(0.9+Math.random()*0.4).toFixed(2));
-  heart.style.setProperty('--duration',(isMobile?10:7)+Math.random()*3+'s');
-  const restricted=getRestrictedArea();
-  let x; do { x=Math.random()*window.innerWidth; }
-  while(x>restricted.left-20 && x<restricted.right+20);
-  heart.style.left=x+"px"; heart.style.top="-40px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),parseFloat(heart.style.getPropertyValue('--duration'))*1000);
-}
-setInterval(createHeart,isMobile?2000:500);
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
 
-// pháo hoa chỉ PC
-if(!isMobile){
-  const canvas=document.getElementById('fireworksCanvas');
-  const ctx=canvas.getContext('2d');
-  let cw,ch,fireworks=[],particles=[];
-  function resize(){cw=canvas.width=innerWidth;ch=canvas.height=innerHeight;} resize();window.addEventListener('resize',resize);
-  class Firework{constructor(sx,sy,tx,ty){this.x=sx;this.y=sy;this.sx=sx;this.sy=sy;this.tx=tx;this.ty=ty;this.dist=Math.hypot(tx-sx,ty-sy);this.coords=[[this.x,this.y]];this.angle=Math.atan2(ty-sy,tx-sx);this.speed=2+Math.random();this.accel=1.01;}update(i){this.coords.unshift([this.x,this.y]);if(this.coords.length>3)this.coords.pop();this.speed*=this.accel;const vx=Math.cos(this.angle)*this.speed,vy=Math.sin(this.angle)*this.speed;if(Math.hypot(this.sx-(this.x+vx),this.sy-(this.y+vy))>=this.dist){createParticles(this.tx,this.ty);fireworks.splice(i,1);}else{this.x+=vx;this.y+=vy;}}draw(){ctx.beginPath();ctx.moveTo(this.coords[this.coords.length-1][0],this.coords[this.coords.length-1][1]);ctx.lineTo(this.x,this.y);ctx.strokeStyle=`hsl(${Math.random()*360},100%,60%)`;ctx.stroke();}}
-  class Particle{constructor(x,y){this.x=x;this.y=y;this.coords=[[this.x,this.y]];this.angle=Math.random()*Math.PI*2;this.speed=Math.random()*4+1;this.friction=0.94;this.gravity=0.6;this.hue=Math.floor(Math.random()*360);this.alpha=1;this.decay=Math.random()*0.01+0.008;}update(i){this.coords.unshift([this.x,this.y]);if(this.coords.length>7)this.coords.pop();this.speed*=this.friction;this.x+=Math.cos(this.angle)*this.speed;this.y+=Math.sin(this.angle)*this.speed+this.gravity;this.alpha-=this.decay;if(this.alpha<=0)particles.splice(i,1);}draw(){ctx.beginPath();ctx.moveTo(this.coords[this.coords.length-1][0],this.coords[this.coords.length-1][1]);ctx.lineTo(this.x,this.y);ctx.strokeStyle=`hsla(${this.hue},100%,60%,${this.alpha})`;ctx.stroke();}}
-  function createParticles(x,y){for(let i=0;i<80;i++)particles.push(new Particle(x,y));}
-  function loop(){requestAnimationFrame(loop);ctx.globalCompositeOperation='destination-out';ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fillRect(0,0,cw,ch);ctx.globalCompositeOperation='lighter';for(let i=fireworks.length-1;i>=0;i--){fireworks[i].draw();fireworks[i].update(i);}for(let i=particles.length-1;i>=0;i--){particles[i].draw();particles[i].update(i);}if(Math.random()<0.015)fireworks.push(new Firework(Math.random()*cw,ch,Math.random()*cw,Math.random()*ch/2));}
+    if (days < 0) {
+      months--;
+      const lastDayOfPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+      days += lastDayOfPrevMonth;
+    }
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    const parts = [];
+    if (years > 0) {
+      parts.push(`${years} năm`);
+    }
+    if (months > 0) {
+      parts.push(`${months} tháng`);
+    }
+    if (days >= 0 && parts.length < 2) { 
+        parts.push(`${days} ngày`);
+    }
+
+    if (parts.length === 0) {
+        counterElement.textContent = "0 ngày";
+    } else {
+        counterElement.textContent = parts.join(' ');
+    }
+  }
+
+  updateCounter();
+  setInterval(updateCounter, 1000);
+
+  // Trái tim rơi
+  function createHeart() {
+    const heart = document.createElement('div');
+    const emojis = ['❤️', '💖', '💞', '💕', '💗', '💓', '💘', '💝', '💟', '❣️', '💌'];
+    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    heart.className = 'heart-fall';
+    
+    heart.style.top = '-50px'; 
+    heart.style.left = (Math.random() * (window.innerWidth - 40) + 20) + 'px';
+    
+    heart.style.fontSize = (14 + Math.random() * 26) + 'px';
+    heart.style.animationDuration = (5 + Math.random() * 3) + 's';
+    heart.style.setProperty('--wiggle', Math.random() > 0.5 ? 1 : -1);
+    const colors = ['#d81e5b', '#ff6384', '#ff9eb8', '#ffc1cc', '#e6b8ff', '#ffd700'];
+    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+    heart.style.textShadow = `0 0 12px ${heart.style.color}, 0 0 20px ${heart.style.color}`;
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, parseFloat(heart.style.animationDuration) * 1000);
+  }
+
+  setInterval(createHeart, 300);
+
+  // Pháo hoa canvas
+  const canvas = document.getElementById('fireworksCanvas');
+  const ctx = canvas.getContext('2d');
+  let cw, ch;
+  let fireworks = [];
+  let particles = [];
+  const colors = ['#ff5252', '#ff9800', '#ffeb3b', '#00e676', '#2196f3', '#e040fb', '#f44336', '#ff6e40', '#ffd740'];
+
+  function resize() {
+    cw = canvas.width = window.innerWidth;
+    ch = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Firework {
+    constructor(sx, sy, tx, ty) {
+      this.x = sx;
+      this.y = sy;
+      this.sx = sx;
+      this.sy = sy;
+      this.tx = tx;
+      this.ty = ty;
+      this.distanceToTarget = this.calculateDistance(sx, sy, tx, ty);
+      this.distanceTraveled = 0;
+      this.coordinates = [];
+      this.coordinateCount = 3;
+      while (this.coordinateCount--) {
+        this.coordinates.push([this.x, this.y]);
+      }
+      this.angle = Math.atan2(ty - sy, tx - sx);
+      this.speed = 2 + Math.random();
+      this.acceleration = 1.02;
+      this.brightness = Math.random() * 0.6 + 0.4;
+      this.targetRadius = 1;
+    }
+    update(index) {
+      this.coordinates.pop();
+      this.coordinates.unshift([this.x, this.y]);
+      if (this.targetRadius < 8) {
+        this.targetRadius += 0.3;
+      } else {
+        this.targetRadius = 1;
+      }
+      this.speed *= this.acceleration;
+      const vx = Math.cos(this.angle) * this.speed;
+      const vy = Math.sin(this.angle) * this.speed;
+      this.distanceTraveled = this.calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
+      if (this.distanceTraveled >= this.distanceToTarget) {
+        createParticles(this.tx, this.ty);
+        fireworks.splice(index, 1);
+      } else {
+        this.x += vx;
+        this.y += vy;
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness * 100}%)`;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    calculateDistance(sx, sy, tx, ty) {
+      const x = tx - sx;
+      const y = ty - sy;
+      return Math.sqrt(x * x + y * y);
+    }
+  }
+
+  class Particle {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+      this.coordinates = [];
+      this.coordinateCount = 5;
+      while (this.coordinateCount--) {
+        this.coordinates.push([this.x, this.y]);
+      }
+      this.angle = Math.random() * Math.PI * 2;
+      this.speed = Math.random() * 5 + 1;
+      this.friction = 0.95;
+      this.gravity = 0.7;
+      this.hue = Math.floor(Math.random() * 360);
+      this.brightness = Math.random() * 60 + 40;
+      this.alpha = 1;
+      this.decay = Math.random() * 0.015 + 0.015;
+    }
+    update(index) {
+      this.coordinates.pop();
+      this.coordinates.unshift([this.x, this.y]);
+      this.speed *= this.friction;
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed + this.gravity;
+      this.alpha -= this.decay;
+      if (this.alpha <= 0) {
+        particles.splice(index, 1);
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+      ctx.lineTo(this.x, this.y);
+      ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+      ctx.stroke();
+    }
+  }
+
+  function createParticles(x, y) {
+    const particleCount = 60;
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(x, y));
+    }
+  }
+
+  function loop() {
+    requestAnimationFrame(loop);
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, cw, ch);
+    ctx.globalCompositeOperation = 'lighter';
+
+    let i = fireworks.length;
+    while (i--) {
+      fireworks[i].draw();
+      fireworks[i].update(i);
+    }
+
+    i = particles.length;
+    while (i--) {
+      particles[i].draw();
+      particles[i].update(i);
+    }
+
+    if (Math.random() < 0.02) {
+      const startX = Math.random() * cw;
+      const startY = ch;
+      const targetX = Math.random() * cw;
+      const targetY = Math.random() * ch / 2;
+      fireworks.push(new Firework(startX, startY, targetX, targetY));
+    }
+  }
+
+  // Điều khiển nhạc
+  const music = document.getElementById('backgroundMusic');
+  let isMusicPlaying = false;
+
+  function playMusic() {
+    if (!isMusicPlaying) {
+      music.play().then(() => {
+        isMusicPlaying = true;
+      }).catch(error => {
+        console.log('Lỗi phát nhạc:', error);
+      });
+    }
+  }
+
+  // Phát nhạc khi nhấp chuột hoặc chạm cảm ứng lần đầu
+  document.addEventListener('click', playMusic, { once: true });
+  document.addEventListener('touchstart', playMusic, { once: true });
+
   loop();
-}else{document.getElementById('fireworksCanvas').style.display="none";}
-
-// nhạc
-const music=document.getElementById('backgroundMusic');let musicPlaying=false;
-music.play().then(()=>musicPlaying=true).catch(()=>{});
-function playMusicOnTouch(){if(!musicPlaying){music.play().then(()=>musicPlaying=true).catch(()=>{});}}
-document.addEventListener('touchstart',playMusicOnTouch,{once:true});
-document.addEventListener('click',playMusicOnTouch,{once:true});
 </script>
 </body>
 </html>
